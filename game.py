@@ -4,8 +4,6 @@ from dungeon_room import DungeonRoom
 from player import Player
 from enemy import Enemy
 from healing_potion import HealingPotion
-from melee_weapon import Sword
-from ranged_weapon import Bow
 from melee_enemy import MeleeEnemy
 from ranged_enemy import RangedEnemy
 from sword import Sword
