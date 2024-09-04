@@ -1,31 +1,24 @@
-# enemy.py
+from abc import ABC, abstractmethod
 
-class Enemy:
+class Enemy(ABC):
     def __init__(self, name, health, attack_power):
         """
-        Initialize the enemy with a name, health, and attack power.
+        Base class for all enemies.
         
-        :param name: The enemy's name
-        :param health: The enemy's health
-        :param attack_power: The enemy's attack power (damage it can inflict)
+        :param name: Name of the enemy
+        :param health: Health points of the enemy
+        :param attack_power: Attack power of the enemy
         """
         self.name = name
         self.health = health
         self.attack_power = attack_power
-
-    def attack(self, player):
-        """
-        Attack the player, reducing their health by the enemy's attack power.
-        """
-        print(f"{self.name} attacks {player.name} for {self.attack_power} damage!")
-        player.take_damage(self.attack_power)
 
     def take_damage(self, damage):
         """
         Reduce the enemy's health when they take damage.
         """
         self.health -= damage
-        print(f"{self.name} takes {damage} damage. Current health: {self.health}")
+        print(f"{self.name} takes {damage} damage! Remaining health: {self.health}")
         if self.health <= 0:
             print(f"{self.name} has been defeated.")
 
@@ -34,3 +27,11 @@ class Enemy:
         Check if the enemy is still alive.
         """
         return self.health > 0
+
+    @abstractmethod
+    def attack(self, player):
+        """
+        Abstract method for attacking the player.
+        Must be implemented by subclasses.
+        """
+        pass
