@@ -1,10 +1,25 @@
 # player.py
 
 class Player:
-    def __init__(self, name, health=100, inventory=[]):
+    def __init__(self, name, health, attack_power):
         self.name = name
         self.health = health
-        self.inventory = inventory
+        self.base_attack_power = attack_power
+        self.equipped_weapon = None
+        self.inventory = []
+
+    def equip_weapon(self, weapon):
+        self.equipped_weapon = weapon
+        print(f"You equipped the {weapon}")
+
+    @property
+    def attack_power(self):
+        if self.equipped_weapon == "sword":
+            return self.base_attack_power + 5
+        elif self.equipped_weapon == "bow":
+            return self.base_attack_power + 3
+        else:
+            return self.base_attack_power
 
     def take_damage(self, damage):
         self.health -= damage
@@ -41,3 +56,10 @@ class Player:
 
     def is_alive(self):
         return self.health > 0
+
+
+    def get_item_names(self):
+        return [item.name for item in self.inventory]
+
+    def find_item_by_name(self, item_name):
+        return next((item for item in self.inventory if item.name.lower() == item_name.lower()), None)

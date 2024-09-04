@@ -6,6 +6,12 @@ from enemy import Enemy
 from healing_potion import HealingPotion
 from melee_weapon import Sword
 from ranged_weapon import Bow
+from melee_enemy import MeleeEnemy
+from ranged_enemy import RangedEnemy
+from sword import Sword
+from bow import Bow
+
+
 
 def create_world():
     """
@@ -15,16 +21,24 @@ def create_world():
     room2 = DungeonRoom("\033[3mThis room is filled with light and strange symbols on the walls.\033[0m")
     
     # Create an enemy in room1
-    goblin = Enemy("Goblin", health=30, attack_power=10)
+    goblin = MeleeEnemy(name="Goblin", health=30, attack_power=10, range=1, speed=2)
+    goblin_archer = RangedEnemy(name="Archer", health=25, attack_power=15, range=5, speed=1)
+    
     room1.add_enemy(goblin)
+    room2.add_enemy(goblin_archer)
+    
 
     # Create items in rooms
     potion = HealingPotion(20)
+    potion2 = HealingPotion(30)
     sword = Sword()  # Melee weapon
     bow = Bow()  # Ranged weapon
+    
     room1.add_item(potion)
     room2.add_item(sword)
     room2.add_item(bow)
+    room2.add_item(potion2)
+
 
     # Connect rooms
     room1.connect_room('north', room2)
@@ -32,13 +46,38 @@ def create_world():
 
     return room1  # Start the game in room1
 
+def goblin_action(player, current_room, distance_to_goblin, distance_to_goblin_archer):
+    for enemy in current_room.enemies:
+        if isinstance(enemy, RangedEnemy):
+            distance = distance_to_goblin_archer
+        else:
+            distance = distance_to_goblin
+
+        if distance <= enemy.range:
+            enemy.attack(player, distance)
+        else:
+            move_distance = min(enemy.speed, distance - enemy.range)
+            distance -= move_distance
+            print(f"The {enemy.name} moves {move_distance} units closer to you!")
+            if isinstance(enemy, RangedEnemy):
+                distance_to_goblin_archer = distance
+            else:
+                distance_to_goblin = distance
+
+    return distance_to_goblin, distance_to_goblin_archer
+
 def begin_game():
         # Create a player
         player_name = input("Enter your character's name: ")
-        player = Player(name=player_name)
+        player = Player(name=player_name, health=100, attack_power=10)
 
         current_room = create_world()
 
+        distance_to_goblin = 5  # Initial distance to the goblin for testing (to be calculated during runtime based on positions)
+        distance_to_goblin_archer = 3  # Initial distance to the goblin archer for testing (to be calculated during runtime based on positions)
+
+        
+        
         while player.is_alive():
             # Describe the current room
             print(current_room.describe())
@@ -58,40 +97,83 @@ def begin_game():
             elif action == "attack":
                 if current_room.enemies:
                     enemy = current_room.enemies[0]
-                    print(f"You attack the {enemy.name}!")
-                    enemy.take_damage(15)
-                    if not enemy.is_alive():
-                        current_room.enemies.remove(enemy)
+                    player_weapon = player.equipped_weapon
+                    
+                    weapon_range = player_weapon.range if player_weapon else 0
+
+                    
+                    if isinstance(enemy, RangedEnemy):
+                        distance = distance_to_goblin_archer
                     else:
-                        enemy.attack(player)
+                        distance = distance_to_goblin
+
+                    if distance <= weapon_range:
+                        print(f"You attack the {enemy.name} with your {player_weapon.name if player_weapon else 'fists'}!")
+                        enemy.take_damage(player.attack_power)
+                        
+                        if not enemy.is_alive():
+                            current_room.enemies.remove(enemy)
+                            print(f"You have defeated the {enemy.name}!")
+                    else:
+                        print(f"The {enemy.name} is too far for your {player_weapon.name if player_weapon else 'unarmed attack'}!")
                 else:
-                    print("There are no enemies here.")
+                    print("There are no enemies to attack.")            
+            
             elif action.startswith("use"):
                 # Use an item (e.g., "use healing potion")
                 item_name = action.split("use ")[-1]
                 player.use_item(item_name)
-            elif action.startswith("pick up "):
-                item_name = action[8:]  # Extract the item name from the command
-            # Check if an item with this name exists in the room
-                for item in current_room.items:
-                    if item.name.lower() == item_name.lower():  # Compare by item name (case-insensitive)
-                        current_room.items.remove(item)  # Remove the item object from the room
-                        player.add_item(item)  # Add the item object to the player's inventory
-                        print(f"You picked up {item.name}")
-                        break
+            elif action.startswith("equip "):
+                item_name = action[6:].lower()  # Extract the item name from the command
+                item = next((item for item in player.inventory if item.name.lower() == item_name), None)
+                if item:
+                    if isinstance(item, (Sword, Bow)):  # Check if item is a weapon
+                        player.equip_weapon(item)
+                        print(f"You have equipped the {item.name}.")
+                    else:
+                        print(f"You can't equip the {item.name}.")
                 else:
-                    print(f"{item_name} is not in the room.")
+                    print(f"You don't have a {item_name} in your inventory.")
+
+            elif action.startswith("pick up "):
+                item_name = action[8:].lower()
+                item = next((item for item in current_room.items if item.name.lower() == item_name), None)
+                if item:
+                    current_room.items.remove(item)
+                    player.inventory.append(item)
+                    print(f"You picked up {item.name}")
+                else:
+                    print(f"There is no {item_name} in this room.")
+
+            elif action.startswith("equip "):
+                item_name = action[6:].lower()  # Extract the item name from the command
+                item = next((item for item in player.inventory if item.name.lower() == item_name), None)
+                if item:
+                    if isinstance(item, (Sword, Bow)):  # Check if item is a weapon
+                        player.equip_weapon(item)
+                        print(f"You have equipped the {item.name}.")
+                    else:
+                        print(f"You can't equip the {item.name}.")
+                else:
+                    print(f"You don't have a {item_name} in your inventory.")
             elif action == "quit":
                 print("Exiting to main menu...")
                 break
             else:
                 print("Invalid action. Try moving in a direction, 'attack', 'pick up [item]', 'use [item]', or 'quit'.")
 
+            
+            if action.lower() != "north" and action.lower() != "south" and action.lower() != "east" and action.lower() != "west"  and action.lower():
+                distance_to_goblin, distance_to_goblin_archer = goblin_action(player, current_room, distance_to_goblin, distance_to_goblin_archer)
+            
+            
+                
+           
+            
 
 def main():
     """
-    Main game loop.
-    """
+    Main game loop.    """
     print("\033[1m\033[36mWelcome to the Dungeon Crawler Game!\033[0m")
     print()
     while True:
@@ -109,3 +191,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

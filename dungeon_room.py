@@ -29,14 +29,6 @@ class DungeonRoom:
             return "The room is empty."
         return f"Enemies in the room: \033[31m{', '.join(enemy.name for enemy in self.enemies)}\033[0m"
 
-    def list_items(self):
-        """
-        List the items in the room.
-        """
-        if not self.items:
-            return "There are no items here."
-        return f"Items in the room: {', '.join(str(item) for item in self.items)}"
-
     def get_exits(self):
         """
         Return the available exits in the room.
@@ -66,3 +58,7 @@ class DungeonRoom:
         """
         self.exits[direction] = room
 
+    def list_items(self):
+        if not self.items:
+            return "There are no items here."
+        return "Items in the room: " + ", ".join(f"{item.name}: {item.description}" for item in self.items)
