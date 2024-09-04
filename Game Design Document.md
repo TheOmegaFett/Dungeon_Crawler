@@ -33,11 +33,17 @@ A web-based dungeon crawler game where players explore procedurally generated du
 ## **Game Flow:**
 
 1. **Start Menu:** (What options are available to the player at the start?)
-2. **Exploration:** (How will players explore dungeons?)
-3. **Combat:** (What will combat feel like? Real-time/turn-based?)
-4. **Loot and Progression:** (How will loot affect progression?)
-5. **Boss Battle:** (Will there be boss encounters? How will they be structured?)
-6. **Victory/Defeat:** (What signifies the end of a game session?)
+   (ideas for start menu:
+   - classic: explore at own pace, decent health bar, any additional items, starting weapons       ect
+   - Timed: Put the player on a time limit to reach the end
+   - Hard core: less health/ lives, no weapon or start items, could even go for instant death if a character dies once, no save points )
+
+3. **Exploration:** (How will players explore dungeons?)
+4. **Combat:** (What will combat feel like? Real-time/turn-based?)
+5. **Loot and Progression:** (How will loot affect progression?)
+6. **Boss Battle:** (Will there be boss encounters? How will they be structured?)
+7. **Victory/Defeat:** (What signifies the end of a game session?)
+8. **Encumberance:** (if a player is going to have items, loot, and weapons, should encumberance be a thing? How will it look game-play, affect combat ect?)  
 
 ---
 
