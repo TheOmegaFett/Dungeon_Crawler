@@ -1,8 +1,10 @@
 # Dungeon_Crawler
+
 A dungeon crawler web development collaborative game project.
 
 # How to Play
-- Run the following terminal command: ```python game.py```
+
+- Run the following terminal command: `python game.py`
 - Navigate the menu to start the game
 - use commands such as:
   - North, Sound, East, West
@@ -12,8 +14,9 @@ A dungeon crawler web development collaborative game project.
 - Have Fun!
 
 # Contributers
+
 - Shane W Miller (TheOmegaFett)
-- Andrea Sutton
+- Andrea Sutton (ImTheDmThatsWhy)
 - Earvin
 - Even
 - Matt
