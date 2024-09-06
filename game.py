@@ -1,13 +1,12 @@
 # game.py
 
-from dungeon_room import DungeonRoom
-from player import Player
-from enemy import Enemy
-from healing_potion import HealingPotion
-from melee_enemy import MeleeEnemy
-from ranged_enemy import RangedEnemy
-from sword import Sword
-from bow import Bow
+from Dungeon.dungeon_room import DungeonRoom
+from Player.player import Player
+from Items.healing_potion import HealingPotion
+from Enemies.melee_enemy import MeleeEnemy
+from Enemies.ranged_enemy import RangedEnemy
+from Items.Weapons.sword import Sword
+from Items.Weapons.bow import Bow
 
 
 def show_title_screen():

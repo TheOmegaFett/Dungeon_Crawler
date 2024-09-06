@@ -1,4 +1,4 @@
-from enemy import Enemy
+from Enemies.enemy import Enemy
 
 class RangedEnemy(Enemy):
     def __init__(self, name, health, attack_power, range, speed):

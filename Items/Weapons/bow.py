@@ -1,4 +1,4 @@
-from weapon import Weapon
+from Items.Weapons.weapon import Weapon
 
 class Bow(Weapon):
     def __init__(self):

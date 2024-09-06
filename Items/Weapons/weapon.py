@@ -1,6 +1,6 @@
 # weapon.py
 from abc import ABC, abstractmethod
-from item import Item
+from Items.item import Item
 
 class Weapon(Item, ABC):
     def __init__(self, name, description, damage, weapon_type="melee", range=1):

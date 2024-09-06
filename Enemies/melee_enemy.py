@@ -1,4 +1,4 @@
-from enemy import Enemy
+from .enemy import Enemy
 
 class MeleeEnemy(Enemy):
     def __init__(self, name, health, attack_power, range, speed):

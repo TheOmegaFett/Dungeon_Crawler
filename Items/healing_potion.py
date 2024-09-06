@@ -1,5 +1,5 @@
 # healing_potion.py
-from item import Item
+from Items.item import Item
 
 class HealingPotion(Item):
     def __init__(self, healing_amount):
