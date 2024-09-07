@@ -1,5 +1,6 @@
 # game.py
 
+import time
 from Dungeon.dungeon_room import DungeonRoom
 from Player.player import Player
 from Items.healing_potion import HealingPotion
@@ -21,13 +22,12 @@ def show_title_screen():
 ███    ███ ███    ███ ███   ███   ███    ███   ███    █▄  ███    ███ ███   ███      ███    █▄  ▀███████████   ███    ███ ███     ███ ███         ███    █▄  ▀███████████ 
 ███   ▄███ ███    ███ ███   ███   ███    ███   ███    ███ ███    ███ ███   ███      ███    ███   ███    ███   ███    ███ ███ ▄█▄ ███ ███▌    ▄   ███    ███   ███    ███ 
 ████████▀  ████████▀   ▀█   █▀    ████████▀    ██████████  ▀██████▀   ▀█   █▀       ████████▀    ███    ███   ███    █▀   ▀███▀███▀  █████▄▄██   ██████████   ███    ███ 
-                                                                                                 ███    ███                          ▀                        ███    ███ 
-
-          
-          
+                                                                                                 ███    ███                          ▀                        ███    ███   
           \033[0m""")
 
-
+    time.sleep(2)
+    input("Press Enter to continue...")
+    print()
 
 def create_world():
     """
